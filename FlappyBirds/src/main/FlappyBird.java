@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
-public class FlappyBird implements ActionListener, KeyListener{
+public class FlappyBird implements ActionListener{
 	
 	Renderer renderer;
 	Rectangle bird;
@@ -42,7 +42,6 @@ public class FlappyBird implements ActionListener, KeyListener{
 	}
 
 	
-	
 	public void setEverything() {
 		JFrame jframe = new JFrame();
 		Timer timer = new Timer(45, this);
@@ -59,7 +58,6 @@ public class FlappyBird implements ActionListener, KeyListener{
 		pipes = new ArrayList<>();
 		random = new Random();
 		
-		
 		addPipe(true);
 		addPipe(true);
 		
@@ -68,24 +66,26 @@ public class FlappyBird implements ActionListener, KeyListener{
 	
 	public void addPipe(boolean atStart) {
 		int space = 300;
+		int distanceBetweenFirstAndSecondPipe = 300; 
 		int pushRight = 600;
 		int width = 100;
-		int height = 50 + random.nextInt(250);
+		int height = 100 + random.nextInt(250);
 		
+	
 		if (atStart) {
-			pipes.add(new Rectangle(SCREEN_WIDTH + width + pipes.size() * 300, SCREEN_HEIGHT - height - GROUND_HEIGHT,
+			pipes.add(new Rectangle(SCREEN_WIDTH + width + pipes.size() * distanceBetweenFirstAndSecondPipe, SCREEN_HEIGHT - height - GROUND_HEIGHT,
 					width, height));
-			pipes.add(new Rectangle(SCREEN_WIDTH + width + (pipes.size() - 1) * 300, 0, width,
+			pipes.add(new Rectangle(SCREEN_WIDTH + width + (pipes.size() - 1) * distanceBetweenFirstAndSecondPipe, 0, width,
 					SCREEN_HEIGHT - height - space));
 		} else {
 			pipes.add(new Rectangle(pipes.get(pipes.size() - 1).x + pushRight, SCREEN_HEIGHT - height - GROUND_HEIGHT, width, height));
 			pipes.add(new Rectangle(pipes.get(pipes.size() - 1).x, 0, width, SCREEN_HEIGHT - height - space));
-			
 	}
+
 		
 	}
 	
-	public void rederPipe(Graphics g, Rectangle pipe) {
+	public void paintPipe(Graphics g, Rectangle pipe) {
 		g.setColor(Color.green.darker());
 		g.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
 	}
@@ -116,7 +116,7 @@ public class FlappyBird implements ActionListener, KeyListener{
 		g.fillRect(bird.x, bird.y, bird.width, bird.height);
 		
 		for(Rectangle rect: pipes) {
-			rederPipe(g,rect);
+			paintPipe(g,rect);
 		}
 		
 	}
@@ -131,30 +131,22 @@ public class FlappyBird implements ActionListener, KeyListener{
 		controls.setBird(bird);
 		
 		for (int i = 0; i < pipes.size(); i++) {
-			Rectangle pipe = pipes.get(i);
-			pipe.x -= pipeSpeed;
+			pipes.get(i).x -= pipeSpeed;
 		}
 		
-//		ticks++;
-//		if (ticks % 2 == 0 && birdYMotion < 15) {
-//			birdYMotion += 1;
-//		}
-		
 
-		
 		for (int i = 0; i < pipes.size(); i++) {
 			Rectangle pipe = pipes.get(i);
 
 			if (pipe.x + pipe.width < 0) {
 				pipes.remove(pipe);
-
+				if(pipes.size()<6) {
 					addPipe(false);
-			}
+				}
+ 			}
 		}
 		
-		
 		bird.y += birdYMotion;
-		
 		
 		
 		for (Rectangle rectangle : pipes) {
@@ -169,29 +161,10 @@ public class FlappyBird implements ActionListener, KeyListener{
 			System.exit(0);
 		}
 		
-		
-		
-		
 		renderer.repaint();
 		
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		
-//		if (e.getKeyCode() == KeyEvent.VK_SPACE)
-//		{
-//			bird.y -= 50;
-//		}
-//		
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
 	
 
 }

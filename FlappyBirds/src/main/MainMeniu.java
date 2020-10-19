@@ -9,8 +9,7 @@ public class MainMeniu {
   		Renderer rend = new Renderer(flappy);
   		flappy.setControls(controls);
 		flappy.setRenderer(rend);
-		flappy.setEverything();
-		
+		flappy.setEverything(); 
 		
 	}
 

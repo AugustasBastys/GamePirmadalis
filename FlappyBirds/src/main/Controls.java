@@ -30,9 +30,10 @@ public class Controls implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if (e.getKeyCode() == KeyEvent.VK_SPACE)
-		{
-			bird.y -= 50;
+		int birdJumpsBy = 50;
+		
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			bird.y -= birdJumpsBy;
 		}
 		
 	}
